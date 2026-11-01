@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Plant Tracker</title>
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="stylesheet" href="font-awesome.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+  <h1>Plant Greenhouse</h1>
+  <p>Manage the plants in the greenhouse.</p>
+    </main>
+
+  <h2>Plant Nursery</h2>
+    <form action="/succulents" method="POST"> 
+        <label for="nickname">Plant nickname</label> 
+        <input id="subject" type="text" name="nickname" placeholder="Thornberry" required>
+
+        <label for="species">Species</label> 
+        <input id="species" type="text" name="species" placeholder="Haworthia" required> 
+
+        <label for="location">Location</label>
+        <input id="location" type="text" name="location" placeholder="Coffee table" required> 
+
+        <label for="sunlight">Sunlight</label> 
+        <select id="sunlight" name="sunlight"> 
+            <option value="low">Low</option> 
+            <option value="bright" selected>Bright</option> 
+            <option value="direct">Direct</option> 
+            <option value="indirect">Indirect</option>
+        </select> 
+
+        <label for="wateringFreq"></label>
+        <input id="wateringFreq" type="number"
+        name="wateringFreq" placeholder="3" min="1" required> 
+
+
+        <label for="lastWatered">Last time watered</label> 
+        <input id="lastWatered" type="date" name="lastWatered" required> 
+
+        <label for="health">Plant health</label>
+        <select id="health" name="health">
+          <option value="thriving">🌻 She's thriving</option>
+          <option value="struggling">🍂 Struggling</option>
+          <option value="withered">🌾 Withering</option>
+          <option value="dead"> ☠️ Dead</option> 
+          </select>
+
+        <label for="healthNote">Health note</label>
+        <textarea id="healthNote" name="healthNote" placeholder="Leaves slightly yellowing, stalk firmness: softening, might be receiving too much water."></textarea>
+
+
+        <button type="submit">Add Plant</button>
+    </form> 
+
+    <h2>Greenhouse Collection</h2>
+    <ul class="succulents"> 
+  <% for (let i = 0; i < succulents.length; i++){%> 
+    <li class="succulent" data-succulent-id="<%= succulents[i]._id %>">
+      <h3>
+        <button class="favoriteButton" type="button" aria-label="Toggle Favorites"><%= (succulents[i].favorite) ? '💕' : '👀' %> 
+        </button> 
+    <%= succulents[i].nickname %> 
+      </h3> 
+
+
+    <p> <strong>Species:</strong> 
+    <%= succulents[i].species %> 
+    </p> 
+  <p><strong>Habitat</strong>
+  <%=succulents[i].location %> </p> 
+
+  <p><strong>Sun levels: </strong>
+  <%=succulents[i].sunlight %></p>
+
+  <p><strong>Water every: </strong>
+  <%=succulents[i].wateringFreq %> days </p>
+
+  <p> 
+    <strong>Last watered: </strong> 
+    <%= succulents[i].lastWatered %> 
+  </p> 
+  
+  <p> 
+    <strong>Watered this many times:</strong> 
+    <%= succulents[i].waterCount %> 
+  </p> 
+
+  <p>
+    <strong>Health: </strong>
+    <%=succulents[i].health %> 
+  </p> 
+  <label for="health-<%=succulents[i]._id %>">Update Health</label>
+  <select class="healthStatus" id="health-<%= succulents[i]._id %>">
+
+          <option value="thriving" <%=succulents[i].health === 'thriving' ? 'selected' : '' %>>🌻 She's thriving</option>
+          <option value="struggling" <%=succulents[i].health === 'struggling' ? 'selected' : '' %>>🍂 Struggling</option>
+          <option value="withered" <%=succulents[i].health === 'withered' ? 'selected' : '' %>>🌾 Withering</option>
+          <option value="dead" <%=succulents[i].health === 'dead' ? 'selected' : '' %>> ☠️ Dead</option> 
+  </select>
+
+  <% if (succulents[i].healthNote) { %> 
+    <p>
+      <strong>Health note:</strong> 
+      <%= succulents[i].healthNote %> 
+    </p> 
+    <% } %> 
+
+    <button class="wateringButton" type="button"> Give water</button> 
+    <button class="editButton" type="button">Edit Attributes</button> 
+
+    <form class="editForm" hidden>
+      <label for="location-<%= succulents[i]._id %>">Location</label>
+
+    <input id="location-<%= succulents[i]._id %>" class="editLocation" type="text" value="<%=succulents[i].location %>" required>
+
+    <label for="lastWatered-<%= succulents[i]._id %>">Last Watered</label> 
+    <input id="lastWatered-<%= succulents[i]._id %>" class="editLastWatered" type="date" value="<%= succulents[i].lastWatered %>" required>
+    
+    <label for="healthNote-<%=succulents[i]._id %>">Health Note</label>
+    <textarea id="healthNote-<%= succulents[i]._id %>" class="editHealthNote"><%=succulents[i].healthNote || ''%></textarea>
+
+    <button type="submit">Save Changes</button>
+    </form>
+
+    <!-- delete button-->
+
+    <button class="deleteButton" type="button"> Remove plant</button> 
+  </li>
+  <% } %> 
+    </ul>
+  </main> 
+    
+
+  <script src="/main.js"></script>
+
+</body>
+</html>
